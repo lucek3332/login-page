@@ -1,6 +1,7 @@
 /* 
 Picked colors:
  - grey = #434e5a
+ - very dark blue = #13445e
  - dark blue = #1c6288
  - medium blue = #70c3ef
  - light blue = #daf1ff
@@ -13,5 +14,54 @@ body {
 	background: linear-gradient(to bottom right, #daf1ff 0%, #70c3ef 5%, #1c6288 30%, #1c6288 70%, #70c3ef 95%, #daf1ff 100%) no-repeat center;
 	background-size: cover;	
 	height: 100vh;
+	overflow-y: hidden;
 }
 
+.main-section {
+	margin-top: 130px;	
+}
+
+.modal-content {
+	background-color: #434e5a;
+	opacity: 0.9;	
+	border-radius: 15px;
+	padding: 10px;
+}
+
+.user-img img {
+	width: 50%;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.form-group input {
+	border-radius: 5px;
+	letter-spacing: 1px;
+	padding-left: 45px;	
+}
+
+.fas {
+	position: absolute;
+	font-size: 22px;
+	left: 50px;
+	padding-top: 8px;
+	color: #434e5a;
+}
+
+.form-input button {
+	width: 40%;
+	margin: 5px 0 20px;	
+}
+
+.btn-success {
+	background-color: #1c6288;
+	font-size: 18px;
+	border-radius: 5px;
+	border: 1px solid #daf1ff;
+	padding: 7px 14px;
+}
+
+.btn-success:hover {
+	background-color: #13445e;
+	border: 1px solid #daf1ff;
+}
