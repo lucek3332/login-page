@@ -1,0 +1,17 @@
+/* 
+Picked colors:
+ - grey = #434e5a
+ - dark blue = #1c6288
+ - medium blue = #70c3ef
+ - light blue = #daf1ff
+*/
+
+/* General */
+
+body {
+	font-family: "Roboto", sans-serif;
+	background: linear-gradient(to bottom right, #daf1ff 0%, #70c3ef 5%, #1c6288 30%, #1c6288 70%, #70c3ef 95%, #daf1ff 100%) no-repeat center;
+	background-size: cover;	
+	height: 100vh;
+}
+
