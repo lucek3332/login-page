@@ -9,14 +9,20 @@
             <div class="modal-content">
                 {% if request.user.is_authenticated %}
 
-                    {% if messages %}
-                        {% for message in messages %}
-                            {{ message }}
-                        {% endfor %}
-                    {% endif %}
+                    <div class="col-8 mx-auto">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success p-1 mt-4 mb-1" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
 
-                    <h1>Cześć {{ request.user }}!</h1>
-                    <a href="{% url 'pure_django:logout' %}"><button>Wyloguj</button></a>
+                    <div class="col-10 mx-auto user-login">
+                        <h1>Cześć {{ request.user }}!</h1>
+                        <a href="{% url 'pure_django:logout' %}"><button class="btn btn-success mb-4">Wyloguj</button></a>
+                    </div>
 
                 {% else %}
 
@@ -51,8 +57,6 @@
                             </div>
 
                             <button type="submit" class="btn btn-success mb-4">Zaloguj</button>
-
-
                         </form>
                     </div>
 

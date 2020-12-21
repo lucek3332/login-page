@@ -28,6 +28,8 @@ body {
 	padding: 10px;
 }
 
+/* Login Form */
+
 .user-img img {
 	width: 50%;
 	margin-top: 20px;
@@ -43,7 +45,7 @@ body {
 .fas {
 	position: absolute;
 	font-size: 22px;
-	left: 50px;
+	left: 55px;
 	padding-top: 8px;
 	color: #434e5a;
 }
@@ -52,6 +54,15 @@ body {
 	width: 40%;
 	margin: 5px 0 20px;	
 }
+
+/* Login Success */
+
+.user-login h1 {
+	margin: 20px 0 20px 0;
+	color: white;
+}
+
+/* Buttons */
 
 .btn-success {
 	background-color: #1c6288;
