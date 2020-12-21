@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+
+        {% if messages %}
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        {% endif %}
+
+        <h1>Cześć {{ request.user }}!</h1>
+        <a href="{% url 'pure_django:logout' %}"><button>Wyloguj</button></a>
+
+    {% else %}
+
+        <form action="." method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Zaloguj">
+        </form>
+
+    {% endif %}
+{% endblock %}
