@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def login_rest(request, *args, **kwargs):
+    return render(request, "frontend/rest_login.html")
