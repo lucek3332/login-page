@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import LoginPage from "./LoginPage";
 
 
 export default class App extends Component {
@@ -8,9 +9,9 @@ export default class App extends Component {
     }
 
     render() {
-        return <h1>Testing React App</h1>;
+        return <LoginPage />;
     }
 }
 
-const appDiv = document.getElementById("app");
+const appDiv = document.getElementById("react-app");
 render(<App />, appDiv)
