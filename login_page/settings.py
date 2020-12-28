@@ -127,13 +127,4 @@ STATIC_URL = '/static/'
 
 LOGOUT_REDIRECT_URL = reverse_lazy("pure_django:login")
 
-REST_FRAMEWORK = {
-
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-    ],
-
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
-}
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
