@@ -128,3 +128,4 @@ STATIC_URL = '/static/'
 LOGOUT_REDIRECT_URL = reverse_lazy("pure_django:login")
 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+SESSION_COOKIE_AGE = 3600
