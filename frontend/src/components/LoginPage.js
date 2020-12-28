@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { Link, Redirect } from "react-router-dom";
 import CsrfToken from "./CsrfToken";
+import Cookies from "js-cookie";
 
 
 export default class LoginPage extends Component {
@@ -16,13 +17,12 @@ export default class LoginPage extends Component {
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this);
+        this.handleLogoutButtonPressed = this.handleLogoutButtonPressed.bind(this);
         this.getLoginStatus = this.getLoginStatus.bind(this);
-
-        this.getLoginStatus();
 
     }
 
-    getLoginStatus() {
+    async componentDidMount() {
         const requestOptions = {
             method: "GET",
             headers: { "Content-Type": "application/json" }
@@ -45,6 +45,34 @@ export default class LoginPage extends Component {
                 this.setState({
                     username: data.username,
                 });
+            });
+    }
+
+    getLoginStatus() {
+        const requestOptions = {
+            method: "GET",
+        };
+
+        fetch("/api/login-status/", requestOptions)
+            .then((response) => {
+                if (response.ok) {
+                    this.setState({
+                        isLoggedIn: true,
+                        });
+                    return response.json();
+                } else {
+                    this.setState({
+                        isLoggedIn: false,
+                    });
+                }
+            })
+            .then((data) => {
+                this.setState({
+                    username: data.username,
+                });
+            })
+            .catch((error) => {
+                console.log(error);
             });
 
     }
@@ -75,20 +103,45 @@ export default class LoginPage extends Component {
         };
 
         fetch("/api/login/", requestOptions)
-          .then((response) => {
-            if (response.ok) {
-                this.setState({
-                    password: "",
-                    isLoggedIn: true,
-                    success_msg: "Logowanie pomyślne",
+            .then((response) => {
+                if (response.ok) {
+                    this.setState({
+                        password: "",
+                        isLoggedIn: true,
+                        success_msg: "Logowanie pomyślne",
+                        });
+                } else {
+                    this.setState({
+                        password: "",
+                        error: "Logowanie nieudane",
                     });
-            } else {
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }
+
+    handleLogoutButtonPressed(e) {
+
+        e.preventDefault();
+
+        const csrfTokenValue = Cookies.get('csrftoken');
+
+        const requestOptions = {
+            method: "POST",
+            headers: { "X-CSRFToken": csrfTokenValue },
+        };
+
+        fetch("/api/logout/", requestOptions)
+            .then((response) => {
                 this.setState({
-                    password: "",
-                    error: "Logowanie nieudane",
+                    username: "",
+                    isLoggedIn: false,
+                    error: "",
                 });
-            }
-          });
+            });
 
     }
 
@@ -140,6 +193,7 @@ export default class LoginPage extends Component {
                                             class="form-control"
                                             id="id_password"
                                             name="password"
+                                            value={this.state.password}
                                             required=""
                                             placeholder="Password"
                                             autocomplete="current-password"
@@ -175,8 +229,17 @@ export default class LoginPage extends Component {
                             </div>
 
                             <div class="col-10 mx-auto user-login">
-                                <h1>Cześć {this.username}!</h1>
-                                <button class="btn btn-success mb-4">Wyloguj</button>
+                                <h1>Cześć {this.state.username}!</h1>
+
+                                <form action="." method="post" onSubmit={this.handleLogoutButtonPressed}>
+
+                                    <button
+                                        type="submit"
+                                        class="btn btn-success mb-4"
+                                    >
+                                        Wyloguj
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
