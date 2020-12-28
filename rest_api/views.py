@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import SessionAuthentication
@@ -32,6 +32,14 @@ class LoginView(APIView):
                 login(request, user)
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
             else:
-                return Response(status=status.HTTP_403_FORBIDDEN)
+                return Response({'Invalid credentials': "Let check username and password again"}, status=status.HTTP_403_FORBIDDEN)
         else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response({'Invalid credentials': "Let check username and password again"}, status=status.HTTP_403_FORBIDDEN)
+
+
+class LogoutView(APIView):
+
+    def post(self, request, format=None):
+        logout(request)
+
+        return Response({"Message": "User logged out"}, status=status.HTTP_200_OK)
