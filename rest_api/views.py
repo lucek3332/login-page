@@ -1,8 +1,20 @@
 from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .serializers import UserSerializer
+
+
+class GetLoginStatusView(APIView):
+    authentication_classes = [SessionAuthentication, ]
+    permission_classes = [IsAuthenticated, ]
+
+    def get(self, request, format=None):
+        user = request.user
+
+        return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
 
 class LoginView(APIView):
