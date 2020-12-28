@@ -33,7 +33,19 @@ export default class LoginPage extends Component {
     }
 
     handleLoginButtonPressed() {
-        console.log(this.state);
+        const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: this.state.username,
+                password: this.state.password
+            }),
+        };
+
+        fetch("/api/login/", requestOptions)
+          .then((response) => response.json)
+          .then((data) => console.log(data));
+
     }
 
     render() {
@@ -82,7 +94,7 @@ export default class LoginPage extends Component {
                                 </div>
 
                                 <button
-                                    type="submit"
+                                    type="button"
                                     class="btn btn-success mb-4"
                                     onClick={this.handleLoginButtonPressed}
                                 >
