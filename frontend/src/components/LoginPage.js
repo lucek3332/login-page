@@ -1,91 +1,68 @@
-import React, { Component } from "react";
-import { render } from "react-dom";
-import { Link, Redirect } from "react-router-dom";
-import CsrfToken from "./CsrfToken";
-import Cookies from "js-cookie";
+import React, { Component } from 'react';
+import { render } from 'react-dom';
+import CsrfToken from './CsrfToken';
+import Cookies from 'js-cookie';
 
 
 export default class LoginPage extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            error: "",
-            success_msg: ""
+            error: '',
+            success_msg: ''
         };
 
         this.handleUsernameChange = this.handleUsernameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLoginButtonPressed = this.handleLoginButtonPressed.bind(this);
         this.handleLogoutButtonPressed = this.handleLogoutButtonPressed.bind(this);
-        this.getLoginStatus = this.getLoginStatus.bind(this);
+        this.focusMethod = this.focusMethod.bind(this);
 
     }
 
     async componentDidMount() {
+
         const requestOptions = {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
         };
 
-        fetch("/api/login-status/", requestOptions)
+        fetch('/api/login-status/', requestOptions)
             .then((response) => {
                 if (response.ok) {
                     this.setState({
-                        isLoggedIn: true,
+                        isLoggedIn: true
                         });
                     return response.json();
                 } else {
                     this.setState({
-                        isLoggedIn: false,
+                        isLoggedIn: false
                     });
+                    throw new Error('User is not authenticated');
                 }
             })
             .then((data) => {
-                this.setState({
-                    username: data.username,
-                });
-            });
-    }
-
-    getLoginStatus() {
-        const requestOptions = {
-            method: "GET",
-        };
-
-        fetch("/api/login-status/", requestOptions)
-            .then((response) => {
-                if (response.ok) {
+                if (data) {
                     this.setState({
-                        isLoggedIn: true,
-                        });
-                    return response.json();
-                } else {
-                    this.setState({
-                        isLoggedIn: false,
+                        username: data.username
                     });
                 }
-            })
-            .then((data) => {
-                this.setState({
-                    username: data.username,
-                });
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error)
             });
 
     }
 
     handleUsernameChange(e) {
         this.setState({
-            username: e.target.value,
+            username: e.target.value
         });
     }
 
     handlePasswordChange(e) {
         this.setState({
-            password: e.target.value,
+            password: e.target.value
         });
     }
 
@@ -94,27 +71,28 @@ export default class LoginPage extends Component {
         e.preventDefault();
 
         const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 username: this.state.username,
                 password: this.state.password
             }),
         };
 
-        fetch("/api/login/", requestOptions)
+        fetch('/api/login/', requestOptions)
             .then((response) => {
                 if (response.ok) {
                     this.setState({
-                        password: "",
+                        password: '',
                         isLoggedIn: true,
-                        success_msg: "Logowanie pomyślne",
+                        success_msg: 'Logowanie pomyślne'
                         });
                 } else {
                     this.setState({
-                        password: "",
-                        error: "Logowanie nieudane",
+                        password: '',
+                        error: 'Logowanie nieudane'
                     });
+                    throw new Error('Invalid credentials');
                 }
             })
             .catch((error) => {
@@ -123,35 +101,49 @@ export default class LoginPage extends Component {
 
     }
 
+    focusMethod = function getFocus() {
+        if (this.state.username) {
+            document.getElementById('id_password').focus();
+        } else {
+            document.getElementById('id_username').focus();
+        }
+    }
+
     handleLogoutButtonPressed(e) {
 
         e.preventDefault();
 
         const csrfTokenValue = Cookies.get('csrftoken');
-
         const requestOptions = {
-            method: "POST",
-            headers: { "X-CSRFToken": csrfTokenValue },
+            method: 'POST',
+            headers: {'X-CSRFToken': csrfTokenValue }
         };
 
-        fetch("/api/logout/", requestOptions)
+        fetch('/api/logout/', requestOptions)
             .then((response) => {
                 this.setState({
-                    username: "",
+                    username: '',
                     isLoggedIn: false,
-                    error: "",
+                    error: ''
                 });
+            })
+            .catch((error) => {
+                console.log(error);
             });
 
     }
 
     render() {
+
         const isLoggedIn = this.state.isLoggedIn;
+
         if (!isLoggedIn) {
+
             return (
                 <div class="modal-dialog text-center">
                     <div class="col-sm-9 mx-auto main-section">
                         <div class="modal-content">
+
                             <div class="col-12 user-img">
                                 <img src="../static/img/user.png" />
                             </div>
@@ -204,6 +196,7 @@ export default class LoginPage extends Component {
                                     <button
                                         type="submit"
                                         class="btn btn-success mb-4"
+                                        onClick={this.focusMethod}
                                     >
                                         Zaloguj
                                     </button>
@@ -213,11 +206,14 @@ export default class LoginPage extends Component {
                     </div>
                 </div>
             );
+
         } else {
+
             return (
                 <div class="modal-dialog text-center">
                     <div class="col-sm-9 mx-auto main-section">
                         <div class="modal-content">
+
                             <div class="col-8 mx-auto">
                                 {this.state.success_msg ? (
                                     <div class="alert alert-success p-1 mt-4 mb-1" role="alert">
