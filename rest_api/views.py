@@ -22,8 +22,8 @@ class LoginView(APIView):
     def post(self, request, format=None):
         data = self.request.data
 
-        username = data.get('username', None)
-        password = data.get('password', None)
+        username = data.get("username", None)
+        password = data.get("password", None)
 
         user = authenticate(username=username, password=password)
 
@@ -32,9 +32,9 @@ class LoginView(APIView):
                 login(request, user)
                 return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
             else:
-                return Response({'Invalid credentials': "Let check username and password again"}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"Invalid credentials": "Let check username and password again"}, status=status.HTTP_403_FORBIDDEN)
         else:
-            return Response({'Invalid credentials': "Let check username and password again"}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"Invalid credentials": "Let check username and password again"}, status=status.HTTP_403_FORBIDDEN)
 
 
 class LogoutView(APIView):
